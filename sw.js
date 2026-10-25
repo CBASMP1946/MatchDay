@@ -1,4 +1,4 @@
-const CACHE_NAME = 'matchday-pwa-v7';
+const CACHE_NAME = 'matchday-pwa-v8';
 const URLS_A_GUARDAR = [
     './',
     './index.html',

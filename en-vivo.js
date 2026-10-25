@@ -7,6 +7,7 @@ const EnVivo = (() => {
     const CFG = (typeof MATCHDAY_CONFIG !== 'undefined' && MATCHDAY_CONFIG) || {};
     const API = (CFG.apiUrl || '').replace(/\/$/, '');
     const DETALLE = {};
+    let bloqueoHasta = 0;   // si la API dice rateLimit, no se vuelve a pedir hasta esta hora
 
     const guardar = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
     const leer = (k, def) => { try { return JSON.parse(localStorage.getItem(k)) || def; } catch (e) { return def; } };
@@ -62,11 +63,13 @@ const EnVivo = (() => {
     }
 
     async function pedir(ruta, params) {
+        if (Date.now() < bloqueoHasta) throw new Error('en pausa por límite de peticiones');
         const u = new URL(API + ruta);
         Object.entries(params).forEach(([k, v]) => u.searchParams.set(k, v));
         const r = await fetch(u);
         const j = await r.json();
         const errores = j.errors && (Array.isArray(j.errors) ? j.errors.length : Object.keys(j.errors).length);
+        if (errores && JSON.stringify(j.errors).includes('rateLimit')) bloqueoHasta = Date.now() + 65000;
         if (!r.ok || errores) throw new Error(errores ? JSON.stringify(j.errors) : 'HTTP ' + r.status);
         return j.response;
     }
@@ -98,7 +101,7 @@ const EnVivo = (() => {
         const ciclo = async () => {
             clearTimeout(timer);
             if (!document.hidden) await tarea();
-            timer = setTimeout(ciclo, seguir() ? segundos() * 1000 : 60000);
+            timer = setTimeout(ciclo, Math.max(seguir() ? segundos() * 1000 : 60000, bloqueoHasta - Date.now()));
         };
         document.addEventListener('visibilitychange', () => { if (!document.hidden) ciclo(); });
         ciclo();
