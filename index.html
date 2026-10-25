@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matchday - Marcadores de Fútbol</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" href="logo.png">
+    <meta name="theme-color" content="#0b1626">
+</head>
+<body>
+    <header class="header-principal">
+        <div class="logo-container">
+            <img src="logo.png" class="app-logo" alt="Matchday">
+        </div>
+        <p class="header-subtitulo">Resultados y Programación en Vivo</p>
+    </header>
+
+    <nav id="filtros" class="filtros" aria-label="Filtrar por liga"></nav>
+
+    <main id="partidos-container"></main>
+
+    <script src="datos.js"></script>
+    <script src="partidos-extra.js"></script>
+    <script src="config.js"></script>
+    <script src="en-vivo.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

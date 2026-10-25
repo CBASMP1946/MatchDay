@@ -1,0 +1,13 @@
+{
+  "name": "Matchday",
+  "short_name": "Matchday",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#06101e",
+  "theme_color": "#0b1626",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "logo.png", "sizes": "500x500", "type": "image/png", "purpose": "any" }
+  ]
+}
