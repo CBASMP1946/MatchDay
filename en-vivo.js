@@ -20,7 +20,9 @@ const EnVivo = (() => {
         'Paranaense': ['Athletico-PR', 'Athletico Paranaense'], 'Atlético Mineiro': ['Atletico-MG'],
         'New York RB': ['New York Red Bulls'], 'NYC FC': ['New York City FC'],
         'SJ Earthquakes': ['San Jose Earthquakes'], "Newell's": ['Newells Old Boys'],
-        'Estudiantes': ['Estudiantes L.P.', 'Estudiantes La Plata']
+        'Estudiantes': ['Estudiantes L.P.', 'Estudiantes La Plata'],
+        'AEK Atenas': ['AEK Athens'], 'Slavia Praga': ['Slavia Praha'],
+        'Bodø/Glimt': ['Bodo/Glimt', 'FK Bodo/Glimt'], 'Sporting CP': ['Sporting CP', 'Sporting Lisbon']
     };
     const RUIDO = ['fc', 'cf', 'sc', 'ac', 'as', 'cd', 'club', 'de', 'del', 'la', 'el', 'ca', 'afc', 'ud'];
     const norm = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();

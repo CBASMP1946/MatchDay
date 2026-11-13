@@ -411,3 +411,7 @@ tr[class^="z-"] .pos-num { background: var(--zona); color: #fff; }
 .final-plata .hero-final { color: #10161f; background: linear-gradient(135deg, #f1f3f6, #aab3c2); }
 .hero.final-oro   .hero-liga { color: #f3d98b; }
 .hero.final-plata .hero-liga { color: #e4e8ee; }
+
+/* Logos de competiciones continentales (reemplazan al trofeo) */
+.bandera.logo-copa { width: auto; max-width: 36px; height: 20px; object-fit: contain; border-radius: 0; }
+.bandera-chip.logo-copa { width: auto; max-width: 28px; height: 15px; object-fit: contain; border-radius: 0; }

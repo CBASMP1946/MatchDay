@@ -12,7 +12,7 @@ const Posiciones = (() => {
     const LIGA_API = {
         pl: 39, laliga: 140, seriea: 135, bundesliga: 78, ligue1: 61,
         colombia: 239, mexico: 262, argentina: 128, brasil: 71, mls: 253,
-        libertadores: 13, sudamericana: 11
+        champions: 2, libertadores: 13, sudamericana: 11
     };
 
     const COLOR = { azul: '#1f5eff', naranja: '#f5a623', verde: '#22c55e', rojo: '#ff4d5e', teal: '#2fb6a3' };

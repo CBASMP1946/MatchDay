@@ -60,12 +60,12 @@ const PARTIDOS = [
 
     { id: 6, liga: 'pl', inicio: '2026-10-31T07:30:00-05:00',
       local: 'Chelsea', visitante: 'Manchester United',
-      estadio: 'Stamford Bridge', ciudad: 'Londres' },
+      estadio: 'Stamford Bridge', ciudad: 'Londres', marcador: [2, 0] },
 
     /* ---- Ejemplos nuevos: fechas/horas de muestra, verifícalas ---- */
     { id: 7, liga: 'pl', inicio: '2026-11-01T10:30:00-05:00',
       local: 'Liverpool', visitante: 'Arsenal',
-      estadio: 'Anfield', ciudad: 'Liverpool' },
+      estadio: 'Anfield', ciudad: 'Liverpool', marcador: [0, 1] },
 
     { id: 8, liga: 'laliga', inicio: '2026-10-31T14:00:00-05:00',
       local: 'Atlético de Madrid', visitante: 'Sevilla',
@@ -140,7 +140,18 @@ const PAIS_LIGA = {
     colombia: 'co', mexico: 'mx', argentina: 'ar', brasil: 'br', mls: 'us'
 };
 
+function logoFallback(img) {
+    const s = document.createElement('span');
+    s.className = `copa-icono copa-${img.dataset.liga}`;
+    s.textContent = '🏆';
+    img.replaceWith(s);
+}
+
 function banderaHTML(liga, clase = 'bandera') {
+    const L = LIGAS[liga];
+    if (L && L.logo) {   // logo propio de la competición (si falla, vuelve al trofeo)
+        return `<img src="${L.logo}" class="${clase} logo-copa" alt="" data-liga="${liga}" onerror="logoFallback(this)">`;
+    }
     const c = PAIS_LIGA[liga];
     if (!c) return `<span class="copa-icono copa-${liga}">🏆</span>`;
     return `<img src="https://flagcdn.com/w40/${c}.png" srcset="https://flagcdn.com/w80/${c}.png 2x" class="${clase}" alt="" loading="lazy" onerror="this.replaceWith('🏆')">`;
