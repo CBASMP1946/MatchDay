@@ -1,0 +1,8 @@
+Pon aquí los logos de las competiciones (PNG con fondo transparente, ~60 px de alto o más):
+
+  champions.png      -> UEFA Champions League
+  libertadores.png   -> CONMEBOL Libertadores
+  sudamericana.png   -> CONMEBOL Sudamericana
+
+Si un archivo no existe, la app muestra el trofeo 🏆 en su lugar.
+Para otra competición: agrega  logo: 'logos/nombre.png'  a su línea en LIGAS (partidos-extra.js).
