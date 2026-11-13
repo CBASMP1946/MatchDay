@@ -1,4 +1,4 @@
-const CACHE_NAME = 'matchday-pwa-v8';
+const CACHE_NAME = 'matchday-pwa-v10';
 const URLS_A_GUARDAR = [
     './',
     './index.html',
@@ -8,6 +8,7 @@ const URLS_A_GUARDAR = [
     './partidos-extra.js',
     './config.js',
     './en-vivo.js',
+    './posiciones.js',
     './app.js',
     './detalle.js',
     './manifest.json',

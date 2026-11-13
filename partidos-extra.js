@@ -10,7 +10,10 @@ Object.assign(LIGAS, {
     mexico:    { nombre: 'México: Liga MX',               corto: 'Liga MX' },
     argentina: { nombre: 'Argentina: Liga Profesional',   corto: 'Argentina' },
     brasil:    { nombre: 'Brasil: Brasileirão Serie A',   corto: 'Brasileirão' },
-    mls:       { nombre: 'EE. UU.: MLS',                  corto: 'MLS' }
+    mls:       { nombre: 'EE. UU.: MLS',                  corto: 'MLS' },
+    /* tema: color de sus finales ('oro' | 'plata'). copa: la tabla se muestra por grupos. */
+    libertadores: { nombre: 'Sudamérica: Copa Libertadores', corto: 'Libertadores', tema: 'oro',   copa: true },
+    sudamericana: { nombre: 'Sudamérica: Copa Sudamericana', corto: 'Sudamericana', tema: 'plata', copa: true }
 });
 
 let _idExtra = 100;
@@ -118,3 +121,20 @@ agregar('mls', null, [
     ['2026-10-24T18:30', 'DC United', 'Cincinnati'],
     ['2026-10-24T19:30', 'FC Dallas', 'SJ Earthquakes']
 ]);
+
+/* ---------- Finales continentales (CONMEBOL) ----------
+   Hora aún sin anunciar: cuando la confirmen, cambia 'inicio' y borra sinHora: true.
+   Local/visitante es nominal (cancha neutral). */
+PARTIDOS.push({
+    id: 200, liga: 'sudamericana', jornada: 'Final',
+    inicio: '2026-11-21T15:00:00-05:00', sinHora: true,
+    local: 'Boca Juniors', visitante: 'Atlético Mineiro',
+    estadio: 'Estadio Metropolitano Roberto Meléndez', ciudad: 'Barranquilla'
+});
+
+PARTIDOS.push({
+    id: 201, liga: 'libertadores', jornada: 'Final',
+    inicio: '2026-11-28T15:00:00-05:00', sinHora: true,
+    local: 'Palmeiras', visitante: 'Estudiantes',
+    estadio: 'Estadio Centenario', ciudad: 'Montevideo'
+});

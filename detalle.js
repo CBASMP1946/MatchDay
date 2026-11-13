@@ -47,9 +47,12 @@ function renderDetalle() {
         ? `<div class="marcador-grande">${mar[0]} <span>-</span> ${mar[1]}</div>`
         : `<div class="vs-grande">VS</div>`;
 
+    const tema = temaFinal(p);
+
     let html = `
-        <section class="tarjeta hero">
+        <section class="tarjeta hero${tema ? ' final-' + tema : ''}">
             <div class="hero-liga">${banderaHTML(p.liga)}<span>${LIGAS[p.liga].nombre}</span></div>
+            ${tema ? '<div class="hero-final">🏆 FINAL</div>' : ''}
             <div class="hero-fecha">${fechaLarga(p)}</div>
             <div class="hero-equipos">
                 <div class="hero-equipo">

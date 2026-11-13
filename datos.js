@@ -123,7 +123,7 @@ function partes(fechaISO) {
 /* "24.10. 06:30" estilo Flashscore */
 function fechaCorta(p) {
     const o = partes(p.inicio);
-    return `${o.day}.${o.month}. ${o.hour}:${o.minute}`;
+    return `${o.day}.${o.month}. ${p.sinHora ? '--:--' : o.hour + ':' + o.minute}`;
 }
 
 /* "sábado, 24 de octubre de 2026 · 06:30" */
@@ -131,7 +131,7 @@ function fechaLarga(p) {
     const d = new Date(p.inicio);
     const dia = new Intl.DateTimeFormat('es-CO', { timeZone: TZ, weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(d);
     const o = partes(p.inicio);
-    return `${dia} · ${o.hour}:${o.minute}`;
+    return `${dia} · ${p.sinHora ? 'hora por confirmar' : o.hour + ':' + o.minute}`;
 }
 
 /* ---------- Banderas de la competición (flagcdn.com) ---------- */
@@ -142,7 +142,7 @@ const PAIS_LIGA = {
 
 function banderaHTML(liga, clase = 'bandera') {
     const c = PAIS_LIGA[liga];
-    if (!c) return '🏆';
+    if (!c) return `<span class="copa-icono copa-${liga}">🏆</span>`;
     return `<img src="https://flagcdn.com/w40/${c}.png" srcset="https://flagcdn.com/w80/${c}.png 2x" class="${clase}" alt="" loading="lazy" onerror="this.replaceWith('🏆')">`;
 }
 
@@ -199,3 +199,12 @@ function etiquetaTiempo(p) {
 }
 
 const ETIQUETA_ESTADO = { prog: 'Progr.', vivo: 'En vivo', fin: 'Final', apl: 'Aplaz.' };
+
+/* ---------- Finales: dorado (Libertadores) y plateado (Sudamericana) ----------
+   Una competición con "tema" en LIGAS ('oro' | 'plata') pinta de ese color sus partidos
+   cuya jornada empiece por "Final". Si aún no se anuncia la hora, usa sinHora: true. */
+function esFinal(p) { return /^final\b/i.test((p.jornada || '').trim()); }
+function temaFinal(p) {
+    const t = LIGAS[p.liga] && LIGAS[p.liga].tema;
+    return t && esFinal(p) ? t : null;
+}

@@ -306,3 +306,108 @@ main {
 .hero-minuto { color: #ff4d5e; font-weight: 700; font-size: 1rem; margin-bottom: 8px; animation: parpadeo 1.6s ease-in-out infinite; }
 .estado-apl { color: #f5a623; border-color: #f5a623; }
 @keyframes parpadeo { 50% { opacity: .45; } }
+
+/* ============================================================
+   Vista "Posiciones", finales en oro / plata
+   ============================================================ */
+.vistas { display: flex; max-width: 950px; margin: 0 auto; padding: 8px 15px 0; }
+.vista-btn {
+    flex: 1; background: transparent; color: #8a99ad; border: 0;
+    border-bottom: 2px solid #1a293d; padding: 10px 0; font-size: 0.88rem; font-weight: 700; cursor: pointer;
+}
+.vista-btn.activo { color: #fff; border-bottom-color: #1f5eff; }
+
+.pos-controles { display: flex; align-items: center; gap: 10px; margin: 4px 0 12px; flex-wrap: wrap; }
+.pos-select {
+    background: #0f2133; color: #e3e7ed; border: 1px solid #1c3249;
+    border-radius: 6px; padding: 7px 10px; font-size: 0.82rem; max-width: 100%;
+}
+.pos-info { color: #8a99ad; font-size: 0.75rem; margin-left: auto; }
+.pos-refrescar, .pos-reintentar {
+    background: #0f2133; color: #b9c4d3; border: 1px solid #1c3249;
+    border-radius: 6px; padding: 5px 10px; font-size: 0.9rem; cursor: pointer;
+}
+.pos-refrescar:disabled { opacity: .35; cursor: default; }
+.pos-reintentar { margin-top: 12px; font-size: 0.85rem; }
+
+.pos-bloque { margin-bottom: 18px; }
+.pos-titulo {
+    background: #0f2133; padding: 10px 14px; font-size: 0.82rem; font-weight: 700;
+    color: #d1d7e0; border-radius: 6px 6px 0 0; border-bottom: 1px solid #1c3249;
+}
+.pos-scroll { overflow-x: auto; background: #0b1626; border-radius: 6px; }
+.pos-titulo + .pos-scroll { border-radius: 0 0 6px 6px; }
+.pos-tabla { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+.pos-tabla th {
+    color: #8a99ad; font-weight: 600; font-size: 0.68rem; text-align: center;
+    padding: 9px 4px; border-bottom: 1px solid #1c3249; text-transform: uppercase;
+}
+.pos-tabla td { padding: 9px 4px; text-align: center; border-bottom: 1px solid #142438; }
+.pos-tabla tr:last-child td { border-bottom: 0; }
+.pos-tabla .c-pos { width: 38px; padding-left: 8px; }
+.pos-tabla .c-eq { text-align: left; width: 100%; max-width: 0; }
+.pos-tabla td:nth-child(n+3):not(.c-pts) { color: #b9c4d3; min-width: 24px; }
+.pos-tabla .c-pts { font-weight: 800; color: #fff; min-width: 30px; padding-right: 10px; }
+.pos-eq { display: flex; align-items: center; min-width: 0; color: #e3e7ed; }
+.pos-eq span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pos-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 22px; height: 22px; border-radius: 50%; font-weight: 700; color: #b9c4d3;
+}
+.z-azul   { --zona: #1f5eff; }
+.z-naranja{ --zona: #f5a623; }
+.z-verde  { --zona: #22c55e; }
+.z-rojo   { --zona: #ff4d5e; }
+.z-teal   { --zona: #2fb6a3; }
+tr[class^="z-"] .pos-num { background: var(--zona); color: #fff; }
+
+.c-ancho { display: none; }
+@media (min-width: 600px) { .pos-tabla th.c-ancho, .pos-tabla td.c-ancho { display: table-cell; } }
+.c-forma { white-space: nowrap; }
+.c-forma i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin: 0 2px; background: #52637a; }
+.c-forma .f-g { background: #22c55e; }
+.c-forma .f-p { background: #ff4d5e; }
+
+.pos-leyenda { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 0.72rem; color: #8a99ad; margin: -6px 2px 18px; }
+.pos-leyenda i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; }
+
+/* Copas: trofeo en oro (Libertadores) o gris (Sudamericana) */
+.copa-icono { margin-right: 9px; font-size: 0.95rem; line-height: 1; flex-shrink: 0; }
+.chip .copa-icono { margin-right: 6px; font-size: 0.8rem; }
+.copa-sudamericana { filter: grayscale(1) brightness(1.3); }
+
+/* Cabecera de la competición */
+.torneo-header.tema-oro   { color: #f3d98b; border-left: 3px solid #d4af37; background: linear-gradient(90deg, rgba(212, 175, 55, .22), #0f2133 75%); }
+.torneo-header.tema-plata { color: #e4e8ee; border-left: 3px solid #c3cad6; background: linear-gradient(90deg, rgba(195, 202, 214, .20), #0f2133 75%); }
+.tema-oro   .pos-titulo { color: #f3d98b; border-left: 3px solid #d4af37; }
+.tema-plata .pos-titulo { color: #e4e8ee; border-left: 3px solid #c3cad6; }
+
+/* Fila de la final en la lista */
+.partido.final-oro   { background: linear-gradient(90deg, rgba(212, 175, 55, .18), rgba(212, 175, 55, .04)); box-shadow: inset 3px 0 0 #d4af37; }
+.partido.final-plata { background: linear-gradient(90deg, rgba(195, 202, 214, .18), rgba(195, 202, 214, .04)); box-shadow: inset 3px 0 0 #c3cad6; }
+.partido.final-oro:hover, .partido.final-oro:active     { background: rgba(212, 175, 55, .24); }
+.partido.final-plata:hover, .partido.final-plata:active { background: rgba(195, 202, 214, .22); }
+.tag-final { font-size: 0.62rem; font-weight: 800; letter-spacing: .08em; padding: 3px 6px; border-radius: 3px; }
+.final-oro   .tag-final { color: #1a1405; background: linear-gradient(135deg, #f3d98b, #d4af37); }
+.final-plata .tag-final { color: #10161f; background: linear-gradient(135deg, #f1f3f6, #aab3c2); }
+.final-oro   .estado-prog, .final-oro   .estado-fin { color: #f3d98b; border-color: #d4af37; }
+.final-plata .estado-prog, .final-plata .estado-fin { color: #e4e8ee; border-color: #c3cad6; }
+.final-oro   .goles:not(.vivo) { color: #f3d98b; }
+.final-plata .goles:not(.vivo) { color: #e4e8ee; }
+
+/* Tarjeta principal del partido */
+.hero.final-oro {
+    border-color: #d4af37;
+    background: radial-gradient(120% 90% at 50% 0%, rgba(212, 175, 55, .22), #0b1626 65%);
+    box-shadow: 0 0 0 1px rgba(212, 175, 55, .25), 0 8px 30px rgba(212, 175, 55, .10);
+}
+.hero.final-plata {
+    border-color: #c3cad6;
+    background: radial-gradient(120% 90% at 50% 0%, rgba(195, 202, 214, .20), #0b1626 65%);
+    box-shadow: 0 0 0 1px rgba(195, 202, 214, .25), 0 8px 30px rgba(195, 202, 214, .08);
+}
+.hero-final { display: inline-block; margin: 8px 0 0; font-size: 0.72rem; font-weight: 800; letter-spacing: .14em; padding: 4px 12px; border-radius: 999px; }
+.final-oro   .hero-final { color: #1a1405; background: linear-gradient(135deg, #f3d98b, #d4af37); }
+.final-plata .hero-final { color: #10161f; background: linear-gradient(135deg, #f1f3f6, #aab3c2); }
+.hero.final-oro   .hero-liga { color: #f3d98b; }
+.hero.final-plata .hero-liga { color: #e4e8ee; }

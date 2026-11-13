@@ -4,21 +4,66 @@ if ('serviceWorker' in navigator) {
         .catch(err => console.error(err));
 }
 
-let ligaActiva = 'todas';
+/* Recuerda la vista y la liga mientras dure la sesión (al volver desde un partido) */
+const guardarSes = (k, v) => { try { sessionStorage.setItem(k, v); } catch (e) {} };
+const leerSes = (k, def) => { try { return sessionStorage.getItem(k) || def; } catch (e) { return def; } };
+
+let ligaActiva = leerSes('md-liga', 'todas');
+let vista = leerSes('md-vista', 'partidos');      // 'partidos' | 'posiciones'
+if (ligaActiva !== 'todas' && !LIGAS[ligaActiva]) ligaActiva = 'todas';
+if (vista !== 'posiciones') vista = 'partidos';
+if (vista === 'posiciones' && ligaActiva === 'todas') ligaActiva = Object.keys(LIGAS)[0];
+
+function renderizarVistas() {
+    const barra = document.getElementById('vistas');
+    barra.innerHTML = [['partidos', 'Partidos'], ['posiciones', 'Posiciones']].map(([k, label]) =>
+        `<button class="vista-btn ${k === vista ? 'activo' : ''}" data-vista="${k}" aria-pressed="${k === vista}">${label}</button>`
+    ).join('');
+    barra.querySelectorAll('.vista-btn').forEach(btn =>
+        btn.addEventListener('click', () => cambiarVista(btn.dataset.vista)));
+}
+
+function cambiarVista(v) {
+    if (v === vista) return;
+    vista = v;
+    // La tabla es de una sola competición: si estaba en "Todas", se empieza por la primera
+    if (vista === 'posiciones' && ligaActiva === 'todas') ligaActiva = Object.keys(LIGAS)[0];
+    guardarSes('md-vista', vista);
+    guardarSes('md-liga', ligaActiva);
+    renderizarVistas();
+    renderizarFiltros();
+    renderizarContenido();
+}
 
 function renderizarFiltros() {
     const barra = document.getElementById('filtros');
-    const items = [['todas', 'Todas'], ...Object.entries(LIGAS).map(([k, v]) => [k, v.corto])];
+    const ligas = Object.entries(LIGAS).map(([k, v]) => [k, v.corto]);
+    const items = vista === 'posiciones' ? ligas : [['todas', 'Todas'], ...ligas];
     barra.innerHTML = items.map(([k, label]) =>
         `<button class="chip ${k === ligaActiva ? 'activo' : ''}" data-liga="${k}">${k === 'todas' ? '' : banderaHTML(k, 'bandera-chip')}${label}</button>`
     ).join('');
     barra.querySelectorAll('.chip').forEach(btn => {
         btn.addEventListener('click', () => {
             ligaActiva = btn.dataset.liga;
+            guardarSes('md-liga', ligaActiva);
             renderizarFiltros();
-            renderizarPartidos();
+            renderizarContenido();
         });
     });
+    // con 12 competiciones el chip activo puede quedar fuera de pantalla
+    const activo = barra.querySelector('.chip.activo');
+    if (activo && activo.scrollIntoView) {
+        try { activo.scrollIntoView({ inline: 'center', block: 'nearest' }); } catch (e) {}
+    }
+}
+
+function renderizarContenido() {
+    if (vista === 'posiciones') {
+        Posiciones.render(document.getElementById('partidos-container'), ligaActiva);
+    } else {
+        Posiciones.cancelar();
+        renderizarPartidos();
+    }
 }
 
 /* Actualiza solo lo que cambia (hora/minuto, marcador, estado) sin redibujar la lista */
@@ -60,7 +105,7 @@ function renderizarPartidos() {
         if (!partidos.length) return;
 
         const header = document.createElement('div');
-        header.className = 'torneo-header';
+        header.className = 'torneo-header' + (LIGAS[clave].tema ? ` tema-${LIGAS[clave].tema}` : '');
         header.innerHTML = `${banderaHTML(clave)}<span>${LIGAS[clave].nombre}</span>`;
         container.appendChild(header);
 
@@ -68,8 +113,9 @@ function renderizarPartidos() {
         bloque.className = 'contenedor-partidos';
 
         partidos.forEach(p => {
+            const tema = temaFinal(p);   // 'oro' | 'plata' | null
             const fila = document.createElement('a');
-            fila.className = 'partido';
+            fila.className = 'partido' + (tema ? ` final-${tema}` : '');
             fila.href = `detalle.html?id=${p.id}`;
             fila.dataset.id = p.id;
             fila.innerHTML = `
@@ -80,6 +126,7 @@ function renderizarPartidos() {
                 </div>
                 <div class="goles"></div>
                 <div class="acciones-partido">
+                    ${tema ? '<span class="tag-final">FINAL</span>' : ''}
                     <span class="estado-badge"></span>
                     <span class="chevron">›</span>
                 </div>`;
@@ -92,8 +139,9 @@ function renderizarPartidos() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    renderizarVistas();
     renderizarFiltros();
-    renderizarPartidos();
+    renderizarContenido();
     EnVivo.iniciarLista(actualizarFilas);       // consulta la API (si hay apiUrl en config.js)
     setInterval(actualizarFilas, 20000);        // mantiene el minuto corriendo entre consultas
 });

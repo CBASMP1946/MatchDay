@@ -19,7 +19,8 @@ const EnVivo = (() => {
         'Inter de Milán': ['Inter'], 'Olympique de Marsella': ['Marseille'],
         'Paranaense': ['Athletico-PR', 'Athletico Paranaense'], 'Atlético Mineiro': ['Atletico-MG'],
         'New York RB': ['New York Red Bulls'], 'NYC FC': ['New York City FC'],
-        'SJ Earthquakes': ['San Jose Earthquakes'], "Newell's": ['Newells Old Boys']
+        'SJ Earthquakes': ['San Jose Earthquakes'], "Newell's": ['Newells Old Boys'],
+        'Estudiantes': ['Estudiantes L.P.', 'Estudiantes La Plata']
     };
     const RUIDO = ['fc', 'cf', 'sc', 'ac', 'as', 'cd', 'club', 'de', 'del', 'la', 'el', 'ca', 'afc', 'ud'];
     const norm = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
@@ -45,7 +46,7 @@ const EnVivo = (() => {
         let mejor = null, puntos = 0;
         lista.forEach(f => {
             const dif = Math.abs(f.fixture.timestamp * 1000 - t0) / 60000;
-            if (dif > 90) return;
+            if (dif > (p.sinHora ? 1440 : 90)) return;   // sinHora: la hora real aún no está confirmada
             const a = sim(p.local, f.teams.home.name), b = sim(p.visitante, f.teams.away.name);
             const s = a + b - dif / 1000;
             if (a >= 0.5 && b >= 0.5 && a + b >= 1.2 && s > puntos) { mejor = f; puntos = s; }
@@ -202,5 +203,5 @@ const EnVivo = (() => {
         }, () => CFG.intervaloDetalle || 60, () => enCurso() && !(DETALLE[p.id] && DETALLE[p.id].fin));
     }
 
-    return { activo: !!API, iniciarLista, iniciarDetalle, detalleDe: id => DETALLE[id] };
+    return { activo: !!API, iniciarLista, iniciarDetalle, detalleDe: id => DETALLE[id], pedir, sim };
 })();
